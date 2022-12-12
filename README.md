@@ -26,88 +26,94 @@ The following steps are performed on the filtered blastn alignments to identify 
 ## FindFlu output
 FindFlu outputs 6 files to the directory specified at runtime by the -o parameter. File names are prepended with the analysis name provided at runtime by the -n parameter.
 
-•	<b>flu_frags_seqs.fa</b>: A FASTA file containing the IAV fragments identified by FindFlu. As in the input file, each fragment is described by a pair on consensus sequences (one for each end of the fragment).
+•	<b>flu_frags_seqs.fa</b>: A FASTA file containing the IAV fragments identified by FindFlu. Each fragment is described by a pair on consensus sequences (one for each end of the fragment). Fragments inherit their FASTA headers from the input file, but with segment and subtype appended.
 
-•	<b>frag_report.csv</b>: A line list indicating segment and subtype for each fragment. Additional metrics are provided for each fragment (described below).
+•	<b>best_ref_seqs_report.csv</b>: This is FindFlu’s most detailed report. Each line describes the alignment of one fragment to one of its best-matching reference sequences. Columns are provided that indicate the segment and subtype of the fragment/reference sequence. Columns are also provided for the host species/collection country/H5 clade of the reference sequence. Alignment metrics (identity and coverage) are also described, along with estimates of fragment length and segment coverage based on the line’s reference sequence.
 
-•	<b>best_ref_seqs_report.csv</b>: A line list indicating the best-matching reference sequences for each fragment.
+•	<b>frag_report.csv</b>: This report is a simplified version of the best reference sequences report; it is a line list wherein information about each fragment is summarized on one line.
 
-•	<b>host_report.csv</b>: A table summarizing the host species annotations of the best-matching reference sequences for each fragment.
+•	<b>host_report.csv</b>: This report tabulates the host species annotations of the best-matching reference sequences for each fragment. Each line describes the percentage of one fragment’s best-matching reference sequences that were annotated with a particular host species.
 
-•	<b>country_report.csv</b>: A table summarizing the collection country annotations of the best-matching reference sequences for each fragment.
+•	<b>country_report.csv</b>: This report tabulates the collection country annotations of the best-matching reference sequences for each fragment. Each line describes the percentage of one fragment’s best-matching reference sequences that were annotated with a particular collection country.
 
-•	<b>H5_clade_report.csv</b>: A table summarizing the H5 clade annotations of the best-matching reference sequences for each H5 fragment.
-
-## Fragment report
-A line list that provides various metrics about each IAV fragment detected. It contains the following columns:
-
-•	<b>experiment</b>: the name of the experiment to which the fragment belongs (extracted from the HopDropper header).
-
-•	<b>library</b>: the name of the library in which the fragment was detected (extracted from the HopDropper header).
-
-•	<b>fragment</b>: the fragment identifier assigned by HopDropper (extracted from the HopDropper header).
-
-•	<b>UMI_pair</b>: the UMI pair describing the fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
-
-•	<b>frag_copies</b>: the number of times the fragment was sequenced (extracted from the HopDropper header).
-
-•	<b>segment</b>: the segment of the IAV genome from which the fragment originated (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
-
-•	<b>subtype</b>: the HA or NA subtype of the HA or NA genome segment from which the fragment originated (for internal segment, subtype is left blank).
-
-•	<b>combined_query_id</b>: the combined alignment identity percentage of the fragment when it is aligned to its best-matching reference sequence, i.e. the percentage nucleotide similarity between the fragment and its best-matching reference sequence. The combined alignment identity percentage is calculated as follows: the number of identical positions in both fragment end alignments are summed, and the number of valid positions in both fragment end alignments are summed. These sums are divided to obtain the combined alignment identity percentage. Identical alignment positions are those where both the query and subject sequences contain the same non-ambiguous nucleotide. Valid alignment positions are those where both the query and subject sequences contain non-ambiguous nucleotide bases. For fragments with multiple best-matching reference sequences, a combined alignment identity percentage is calculated for each reference sequence, then the median value is reported.
-
-•	<b>combined_query_cov</b>: the combined query coverage percentage of the fragment when it is aligned to its best-matching reference sequence, i.e. the extent of the fragment end sequences that aligned to the best-matching reference sequence. The combined query coverage percentage is calculated as follows: The number of covered query positions from both fragment end alignments are summed, and the length of both fragment end sequences are summed. These sums are divided to obtain the combined query coverage percentage. Covered query positions are calculated by subtracting the query alignment end coordinate from the query alignment start coordinate. For fragments with multiple best-matching reference sequences, a combined query coverage percentage is calculated for each reference sequence, then the median value is reported.
-
-•	<b>frag_length</b>: the estimated length of the fragment based on its alignment to its best-matching reference sequence. Fragment start and end coordinates are determined from the minimum and maximum subject coordinates from both fragment end alignments. Fragment length is calculated by subtracting the fragment start coordinate from the fragment end coordinate. For fragments with multiple best-matching reference sequences, a fragment length is estimated for each reference sequence, then the median value is reported.
-
-•	<b>frag_subject_cov</b>: the percentage of the fragment’s best-matching reference sequence covered by the fragment. This is calculated by dividing the estimated length of the fragment by the length of the best-matching reference sequence. For fragments with multiple best-matching reference sequences, coverage is estimated for each reference sequence, then the median value is reported.
+•	<b>H5_clade_report.csv</b>: This report tabulates the H5 clade annotations of the best-matching reference sequences for each H5 fragment. Each line describes the percentage of one H5 fragment’s best-matching reference sequences that were annotated with a particular H5 clade.
 
 ## Best reference sequences report
-A line list that reports the best-matching reference sequences for each fragment and associated alignment metrics. Each line describes one fragment-reference sequence pairing. It contains the following columns:
+Each line of this report describes the alignment of one fragment to one of its best-matching reference sequences. It contains the following columns:
 
-•	<b>experiment</b>: the name of the experiment to which the fragment belongs (extracted from the HopDropper header).
+•	<b>experiment</b>: the name of the experiment to which this line's fragment belongs (extracted from the HopDropper header).
 
-•	<b>library</b>: the name of the library in which the fragment was detected (extracted from the HopDropper header).
+•	<b>library</b>: the name of the library in which this line's fragment was detected (extracted from the HopDropper header).
 
-•	<b>fragment</b>: the fragment identifier assigned by HopDropper (extracted from the HopDropper header).
+•	<b>fragment</b>: the fragment identifier assigned to this line's fragment by HopDropper (extracted from the HopDropper header).
 
-•	<b>UMI_pair</b>: the UMI pair describing the fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
+•	<b>UMI_pair</b>: the UMI pair describing this line's fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
 
-•	<b>frag_copies</b>: the number of times the fragment was sequenced (extracted from the HopDropper header).
+•	<b>ref_seq_ID</b>: the unique identifier of this line's reference sequence.
 
-•	<b>ref_seq_ID</b>: the unique identifier of the reference sequence.
+•	<b>ref_seq</b>: the strain name of this line's reference sequence and its HxNx subtype in parentheses.
 
-•	<b>ref_seq</b>: the strain name of the reference sequence and its HxNx subtype in parentheses.
+•	<b>segment</b>: the IAV genome segment of this line's reference sequence (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
 
-•	<b>segment</b>: the IAV genome segment described by the reference sequence (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
+•	<b>subtype</b>: the HA or NA subtype of this line's reference sequence (for internal segment, subtype is left blank).
 
-•	<b>subtype</b>: the HA or NA subtype of the HA or NA genome segment described by the reference sequence (for internal segment, subtype is left blank).
+•	<b>host</b>: The host species from which this line's reference sequence was collected.
 
-•	<b>combined_query_id</b>: the combined alignment identity percentage of the fragment when it is aligned to the reference sequence, i.e. the percentage nucleotide similarity between the fragment and its best-matching reference sequence. The combined alignment identity percentage is calculated as follows: the number of identical positions in both fragment end alignments are summed, and the number of valid positions in both fragment end alignments are summed. These sums are divided to obtain the combined alignment identity percentage. Identical alignment positions are those where both the query and subject sequences contain the same non-ambiguous nucleotide. Valid alignment positions are those where both the query and subject sequences contain non-ambiguous nucleotide bases.
+•	<b>country</b>: The country where this line's reference sequence was collected.
 
-•	<b>combined_query_cov</b>: the combined query coverage percentage of the fragment when it is aligned to the reference sequence, i.e. the extent of the fragment end sequences that aligned to the best-matching reference sequence. The combined query coverage percentage is calculated as follows: The number of covered query positions from both fragment end alignments are summed, and the length of both fragment end sequences are summed. These sums are divided to obtain the combined query coverage percentage. Covered query positions are calculated by subtracting the query alignment end coordinate from the query alignment start coordinate.
+•	<b>H5_clade</b>: The H5 lineage/clade to which this line's reference sequence belongs (only completed for reference sequences describing HA segments belonging to the H5 subtype).
+
+•	<b>combined_query_id</b>: the combined alignment identity percentage of this line's fragment when it is aligned to this line's reference sequence, i.e. the percentage nucleotide similarity between the fragment and its best-matching reference sequence. The combined alignment identity percentage is calculated as follows: the number of identical positions in both fragment end alignments are summed, and the number of valid positions in both fragment end alignments are summed. These sums are divided to obtain the combined alignment identity percentage. Identical alignment positions are those where both the query and subject sequences contain the same non-ambiguous nucleotide. Valid alignment positions are those where both the query and subject sequences contain non-ambiguous nucleotide bases.
+
+•	<b>combined_query_cov</b>: the combined query coverage percentage of this line's fragment when it is aligned to this line's reference sequence, i.e. the extent of the fragment end sequences that aligned to the best-matching reference sequence. The combined query coverage percentage is calculated as follows: The number of covered query positions from both fragment end alignments are summed, and the length of both fragment end sequences are summed. These sums are divided to obtain the combined query coverage percentage. Covered query positions are calculated by subtracting the query alignment end coordinate from the query alignment start coordinate.
+
+•	<b>ref_seq_length</b>: The length (in nucleotide positions) of this line's reference sequence.
+
+•	<b>frag_length</b>: The estimated length (in nucleotide positions) of this line's fragment based on this line's reference sequence.
 
 •	<b>frag_subject_cov</b>: the percentage of the reference sequence covered by the fragment. This is calculated by dividing the estimated length of the fragment by the length of the best-matching reference sequence.
 
+## Fragment report
+This report is a line list wherein information about each fragment is summarized on one line. It contains the following columns:
+
+•	<b>experiment</b>: the name of the experiment to which this line's fragment belongs (extracted from the HopDropper header).
+
+•	<b>library</b>: the name of the library in which this line's fragment was detected (extracted from the HopDropper header).
+
+•	<b>fragment</b>: the fragment identifier assigned to this line's fragment by HopDropper (extracted from the HopDropper header).
+
+•	<b>UMI_pair</b>: the UMI pair describing this line's fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
+
+•	<b>frag_copies</b>: the number of times this line's fragment was sequenced (extracted from the HopDropper header).
+
+•	<b>segment</b>: IAV genome segment from which this line's fragment originated (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
+
+•	<b>subtype</b>: the HA or NA subtype of this line's fragment (for internal segment, subtype is left blank).
+
+•	<b>combined_query_id</b>: the median combined alignment identity percentage of this line's fragment when it is aligned to all of its best-matching reference sequences.
+
+•	<b>combined_query_cov</b>: the median combined query coverage percentage of this line's fragment when it is aligned to all of its best-matching reference sequences.
+
+•	<b>frag_length</b>: the median estimated length of this line's fragment based on all of its best-matching reference sequences.
+
+•	<b>frag_subject_cov</b>: the median segment coverage of this line's fragment when it is aligned to all of its best-matching reference sequences.
+
 ## Host, country, and H5 clade reports
-A line list that reports the host, country, and H5 clade annotations of fragments’ best-matching reference sequences. Each line describes the number of times a particular host/country/H5 clade annotation was observed among a fragment’s best-matching reference sequences. Only fragments originating from HA segments belonging to the H5 subtype are reported on the H5 clade report. It contains the following columns:
+These reports tabulate the host species/collection country/H5 clade annotations of the best-matching reference sequences for each fragment. Each line describes the percentage of one fragment’s best-matching reference sequences that were annotated with a particular host species/collection country/H5 clade. Only fragments originating from HA segments belonging to the H5 subtype are reported on the H5 clade report. These reports contains the following columns:
 
-•	<b>experiment</b>: the name of the experiment to which the fragment belongs (extracted from the HopDropper header).
+•	<b>experiment</b>: the name of the experiment to which this line's fragment belongs (extracted from the HopDropper header).
 
-•	<b>library</b>: the name of the library in which the fragment was detected (extracted from the HopDropper header).
+•	<b>library</b>: the name of the library in which this line's fragment was detected (extracted from the HopDropper header).
 
-•	<b>fragment</b>: the fragment identifier assigned by HopDropper (extracted from the HopDropper header).
+•	<b>fragment</b>: the fragment identifier assigned to this line's fragment by HopDropper (extracted from the HopDropper header).
 
-•	<b>UMI_pair</b>: the UMI pair describing the fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
+•	<b>UMI_pair</b>: the UMI pair describing this line's fragment (extracted from the HopDropper header). This can be used to identify the same fragment across different experiments (when it might have been assigned a different fragment identifier within its library).
 
-•	<b>frag_copies</b>: the number of times the fragment was sequenced (extracted from the HopDropper header).
+•	<b>segment</b>: the IAV genome segment from which this line's fragment originated (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
 
-•	<b>segment</b>: the segment of the IAV genome from which the fragment originated (one of PB2, PB1, PA, HA, NP, NA, M, or NS).
+•	<b>subtype</b>: the HA or NA subtype of this line's fragment (for internal segment, subtype is left blank).
 
-•	<b>subtype</b>: the HA or NA subtype of the HA or NA genome segment from which the fragment originated (for internal segment, subtype is left blank).
-
-•	<b>host/country/H5_clade</b>: one of the host species/collection country/H5 clade annotations observed among the best-matching reference sequences for this fragment. 
+•	<b>host/country/H5_clade</b>: one of the host species/collection country/H5 clade annotations observed among the best-matching reference sequences for this line's fragment. 
 
 •	<b>host_count/country_count/H5_clade_count</b>: the number of times this line’s host species/collection country/H5 clade annotation appeared among this line’s fragment’s best-matching reference sequences.
 
