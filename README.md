@@ -21,7 +21,7 @@ FindFlu aligns input sequences to the reference sequence database with blastn (v
 The following steps are performed on the filtered blastn alignments to identify each fragment's best-matching reference sequences:
 1.	A combined bitscore is calculated for each fragment-reference sequence pairing. The combined bitscore is determined by adding together the individual bitscores for both fragment ends when aligned to the reference sequence.
 
-2.	The best reference sequences for each fragment are chosen based on the highest combined bitscores calculated in step #3. Best reference sequences are only retained if both ends of the fragment aligned. A fragment is discarded if all of its best reference sequences do not share the same segment and subtype annotations.
+2.	The best reference sequences for each fragment are chosen based on the highest combined bitscores calculated in the previous step. Best reference sequences are only retained if both ends of the fragment aligned. A fragment is discarded if all of its best reference sequences do not share the same segment and subtype annotations.
 
 ## FindFlu output
 FindFlu outputs 6 files to the directory specified at runtime by the -o parameter. File names are prepended with the analysis name provided at runtime by the -n parameter.
